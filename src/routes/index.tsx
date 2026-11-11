@@ -2,7 +2,7 @@ import { createFileRoute } from '@tanstack/react-router';
 import { useEffect,useMemo,useRef,useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { useProgress,awardReading,awardCheck,completedStages } from '@/game/store';
-import { CHAPTERS,STAGES,INTRO_LINES,STORY_IMAGE,bossStage,type Chapter } from '@/game/adventure';
+import { CHAPTERS,STAGES,INTRO_LINES,bossStage,type Chapter } from '@/game/adventure';
 import { playMusic,stopMusic,setMusicOn,setMusicVol,vol,sfx } from '@/game/audio';
 import { TopBar,Confetti } from '@/game/ui';
 import { AdventureMap } from '@/game/AdventureMap';

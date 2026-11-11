@@ -2,6 +2,7 @@ import type { Chapter, Question, Stage } from './adventure';
 import { suppliedStages } from './supplied-content';
 import { laterStages } from './later-content';
 import { CHAPTER_IMAGES } from './chapter-images';
+import nest from '@/assets/magpie-nest.jpg';
 
 export const BOSS_PHASE_NAMES = ['The Shiny Magnet', 'Ask It Back', 'The Give-Back Speech'];
 
@@ -64,7 +65,7 @@ export function suppliedBossStage(phase: number): Stage {
   return {
     id: 7, phase, place: 'Magpie\u2019s Nest', mission: BOSS_PHASE_NAMES[phase] ?? BOSS_PHASE_NAMES[0] ?? 'Final battle',
     desc: 'Ask for every gadget back!', x: 88, y: 12,
-    image: CHAPTER_IMAGES[7] ?? '', emoji: '🪺', questions,
+    image: nest, emoji: '🪺', questions,
     cutscene: BOSS_INTRO,
     taunt: phase === 2 ? 'Mister Magpie: Shiny things are better when you share them.' : 'Mister Magpie: Put that down! That\u2019s mine… isn\u2019t it?',
     ...(phase === 0 ? { timerSecs: BOSS_ALARM_SECONDS } : phase === 1 ? { timerSecs: BOSS_BUILDER_SECONDS } : {}),
