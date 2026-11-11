@@ -39,6 +39,15 @@ export const CHAPTERS: Chapter[] = [...suppliedChapters, ...laterChapters, ...fi
 
 export const INTRO_LINES = ["Previously… Detective Zabyr found the Stolen Weekend and brought it back!", "Pip: Zabyr! Mister Magpie has taken EVERY gadget in Gadgeton!", "Mister Magpie: If I can use it, it is mine! Shiny things are for keeping!", 'Pip: And nobody can ask for anything back. All their words are upside down!'];
 
+/**
+ * Activities where the student assembles letters or words and a countdown still makes
+ * sense as a challenge, but not at the difficulty timer's speed.
+ */
+export const BUILD_SECONDS = 45;
+export const BUILD_KINDS = ['spelling', 'builder'];
+/** Kinds that run no countdown at all: the thinking is the task, not the speed. */
+export const UNTIMED_KINDS = ['punctuate', 'ask', 'transform', 'twister', 'reply', 'boss-speech'];
+
 /** Kinds that render their own activity UI, so PlayStage never draws option buttons for them. */
 export const ACTIVITY_KINDS = ['ask', 'punctuate', 'spelling', 'transform', 'twister', 'reply', 'builder', 'boss-speech'];
 /** Kinds that keep their whole option list at every difficulty. */
