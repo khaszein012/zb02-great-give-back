@@ -1,0 +1,23 @@
+import { Crown,Lock } from 'lucide-react';
+import { Button } from '@/components/ui/button';
+import { MAP_IMAGE,STAGES,bossStage,questionsFor } from './adventure';
+import { completedStages,stageUnlocked,unlockedPowerIds,type Progress } from './store';
+import { Stars } from './ui';
+import { PowerBar } from './PowerBar';
+export function AdventureMap({p,onOpen,onStory,onIntro}:{p:Progress;onOpen:(id:number)=>void;onStory:()=>void;onIntro:()=>void}){
+ const done=completedStages(p);const next=STAGES.find(s=>stageUnlocked(p,s.id)&&!p.levelStars[s.id])??bossStage(0);
+ return <main className="flex-1">
+ <div className="adventure-map relative mx-auto w-full max-w-[1920px] overflow-hidden">
+ <img src={MAP_IMAGE} alt="Gadgeton: gadget garage, borrow bench, silent e vault, festival green, signwriter’s shop, globe room and magpie’s nest" width={1920} height={1080} className="absolute inset-0 h-full w-full object-cover"/>
+ {STAGES.map(s=><div key={`grey${s.id}`} className={`map-grey area-${s.id} ${p.levelStars[s.id]?'restored':''}`}/>)}
+ <div className="map-heading absolute left-[3%] top-[4%] max-w-[35%]"><p className="font-display text-sm font-bold text-paper">DETECTIVE ZABYR · EPISODE 3</p><h1 className="font-display text-4xl font-bold leading-none text-paper drop-shadow-lg md:text-5xl xl:text-6xl">THE GREAT<br/>GIVE-BACK</h1><p className="mt-3 max-w-sm rounded-lg bg-navy/85 p-3 text-lg font-bold text-gold">{p.teaser}</p></div>
+ <div className="map-greeting absolute right-[3%] top-[3%] rounded-2xl bg-card/95 px-4 py-3 text-right shadow-xl"><div className="font-display text-xl font-bold">Hey, Zabyr! 🔍</div><div className="text-sm font-bold text-muted-foreground">Gadgeton Detective</div><div className="mt-1 font-display text-lg font-bold text-success-dark">⭐ {p.stars} · {p.points} points</div></div>
+ {[...STAGES,bossStage(0)].map(s=>{const open=stageUnlocked(p,s.id);return <div key={s.id} className={`map-node node-${s.id} absolute flex -translate-x-1/2 -translate-y-1/2 flex-col items-center`} style={{left:`${s.x}%`,top:`${s.y}%`}}><Button variant="ghost" disabled={!open} onClick={()=>onOpen(s.id)} aria-label={s.id===7?'Final boss: Mister Magpie':`Level ${s.id}: ${s.place}`} className={`game-btn grid size-14 place-items-center rounded-full border-4 border-card text-3xl shadow-xl xl:size-16 ${s.id===7?'bg-boss text-gold':open?'btn-gold':'bg-navy-soft text-paper'} ${next.id===s.id?'anim-pulse-node':''}`}>{!open?<Lock/>:s.id===7?<Crown/>:s.id}</Button><div className={`mt-1 max-w-52 rounded-xl px-3 py-1 text-center shadow-lg ${s.id===7?'bg-boss text-paper':'bg-card/95'}`}><div className="font-display text-base font-bold leading-tight xl:text-xl">{s.id===7?'MISTER MAGPIE':s.place}</div><div className="text-[10px] font-extrabold xl:text-xs">{s.id===7?'FINAL BOSS':`LEVEL ${s.id} · ${s.mission.toUpperCase()}`}</div><Stars n={p.levelStars[s.id]??0} size="text-sm"/></div></div>;})}
+ <section className="next-mission absolute bottom-[3%] left-[3%] w-[min(30%,380px)] rounded-2xl bg-card/95 p-4 shadow-xl"><div className="text-xs font-extrabold text-success-dark">{p.introSeen?'NEXT MISSION':'YOUR NEW ADVENTURE'}</div><h2 className="font-display text-2xl font-bold">{next.place}: {next.mission}</h2><p className="my-2 text-sm font-bold text-muted-foreground">{next.desc}</p><p className="mb-3 text-sm font-bold">📋 {questionsFor(next,p.difficulty).length} questions · ⭐ 3 stars to earn</p><Button variant="ghost" onClick={()=>p.introSeen?onOpen(next.id):onIntro()} className="game-btn btn-go h-auto w-full py-3 text-2xl">Let's go →</Button></section>
+ <div className="orb-progress absolute bottom-[3%] left-1/2 rounded-full bg-navy/95 px-5 py-3 font-display text-xl font-bold text-paper">🔌 {done} / 6 Gadgets Back</div>
+ <div className="story-map-button absolute bottom-[3%] right-[3%]"><Button variant="ghost" onClick={onStory} className="game-btn btn-gold h-auto py-3 text-xl">📚 Story Book</Button></div>
+ </div>
+ <div className="mx-auto flex max-w-[1920px] flex-wrap items-center gap-3 p-3"><div className="glass-navy flex items-center gap-3 rounded-2xl p-3"><span className="font-display font-bold text-gold">GADGET BAG</span><div className="flex gap-2">{STAGES.map(s=><span key={s.id} title={s.place} className={`grid size-9 place-items-center rounded-full border-2 text-xl ${p.levelStars[s.id]?'anim-pop border-gold bg-gold/20':'border-paper/30 opacity-50'}`}>{p.levelStars[s.id]?'🔌':'○'}</span>)}</div></div><div className="flex-1"><PowerBar unlocked={p.powerupsUnlocked} unlockedIds={unlockedPowerIds(p)}/></div></div>
+ <footer className="pb-5 text-center font-display text-lg text-paper/90">Made for gadget detectives ✨</footer>
+ </main>;
+}
